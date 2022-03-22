@@ -28,4 +28,16 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+.irasuto {
+    width: 300px;
+    height: 300px;
+    border: 1rem solid orange;
+    margin: 0 auto;
+  }
+
+  .yohaku {
+    margin: 50px 0;
+  }
+  
 </style>
