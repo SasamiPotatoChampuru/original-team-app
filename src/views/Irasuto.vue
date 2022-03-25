@@ -159,7 +159,7 @@ export default {
     // 文字の太さwatch
     pen_line_width(val) {
       this.context.lineWidth = val
-    },
+    }, 
 
     eraser_line_width(val) {
       this.context.lineWidth = val

@@ -2,7 +2,8 @@
   <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
-    <router-link to="/quiz">Quiz</router-link> |
+    <router-link to="/Quiz">Quiz</router-link> |
+    <router-link to="/Ishisotsu">Ishisotsu</router-link> |
     <router-link to="/irasuto">Irasuto</router-link> |
 
   </div>

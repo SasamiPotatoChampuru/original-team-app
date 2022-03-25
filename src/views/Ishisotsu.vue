@@ -100,19 +100,18 @@
 
     <div v-if="first">
         <h2>Q. {{ NwordQuiz[quiznumber].text }}</h2>
+        <p>残り時間 : {{ count }}</p>
 
         <div id="v-model">
           <div>{{ textfield }}</div>
           <button v-on:click="Next">次へ</button>
-          <button v-on:click="feedback" :key="feedback">OK</button>
+          <button v-on:click="feedback">OK</button>
         </div>
       </div>
 
     <div v-if="screentwo">
       <div>{{ textfield }}</div>
       <div>{{ feedbacktext }}</div>
-
-      <h1>答え：{{ correctanswer }}</h1>
 
       <h3>スコア：{{ score }} points </h3>
     </div>
@@ -153,43 +152,47 @@ export default {
       screenone: false,
       screentwo: false,
       NwordQuiz: [],
-      correctanswer: "",
       feedbacktext: "",
       score: 0,
+      count: 60,
       quizzes: [
         {
-          text: "3",
-          answer: ["バ", "ナ", "ナ"],
+          text: "ハマると辞められない3文字といえば？",
+          answer: "",
           word: 3,
         },
         {
-          text: "33",
-          answer: "バナナ",
+          text: "「ま」から始まる3文字の身体の一部といえば？",
+          answer: "",
           word: 3,
         },
         {
-          text: "4",
-          answer: "バナナ4",
+          text: "「イ」から始まる3文字の国といえば？",
+          answer: "",
           word: 4,
         },
         {
-          text: "44",
-          answer: "4バナナ",
+          text: "4文字の緑の野菜と言えば？",
+          answer: "",
           word: 4,
         },
         {
-          text: "5",
-          answer: "バナナ55",
+          text: "5文字の高いものと言えば？",
+          answer: "",
           word: 5,
         },
         {
-          text: "55",
-          answer: "55バナナ",
-          word: 5,
+          text: "子供の頃の夢を6文字でいうと？",
+          answer: "",
+          word: 6,
         },
       ],
     }
   },
+
+   created: function() {
+      setInterval(() => { this.count-- }, 1000)
+  }, 
 
   methods: {
     showQuiz(n) {
@@ -215,10 +218,10 @@ export default {
       this.textfield = this.userAnswer
       this.correctanswer = this.NwordQuiz[this.quiznumber].answer
       if (this.textfield === this.NwordQuiz[this.quiznumber].answer) {
-        this.feedbacktext = "正解です！"
+        this.feedbacktext = ""
         this.score += 100
       } else {
-        this.feedbacktext = "不正解です！"
+        this.feedbacktext = ""
         this.score -= 50
       }
         this.screenone = true;
