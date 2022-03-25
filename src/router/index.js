@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
 import Home from "../views/Home.vue"
-import Quiz from "../views/Quiz.vue"
+import quiz from "../views/quiz.vue"
 import Ishisotsu from "../views/Ishisotsu.vue"
 import Irasuto from "../views/Irasuto.vue"
 
