@@ -1,18 +1,17 @@
 <template>
-    <div class="app">
-<div v-if="screenzero">
+  <div class="app">
+    <div v-if="screenzero">
       <p>チーム名を入力してください</p>
-      <input type="text" v-model="input">
+      <input type="text" v-model="input" />
       <button v-on:click="nameButton">OK</button>
 
       <!--
       チーム名とスコアをfirebaseに保存する
       確認画面、あなたは〇〇さんですか？
       -->
+    </div>
 
-</div>
-
-<div v-if="screenone">
+    <div v-if="screenone">
       <p>参加人数を選択してください</p>
 
       <div class="suji">
@@ -24,9 +23,8 @@
         <button v-on:click="showQuiz(8)">8</button>
         <button v-on:click="showQuiz(9)">9</button>
         <button v-on:click="showQuiz(10)">10</button>
-</div>
+      </div>
 
-      
       <!--
       参加人数3の時、peoplenumber（変数）が
       初期値1、次へのボタンにプラス1する
@@ -35,12 +33,20 @@
       参加人数と画面遷移の数が一致したときにスコア算出
       -->
 
-      <input
-        type="text"
-        v-if="ifNumber[0]"
-        v-model="inputAnswer0"
-        maxlength="1"
-      />
+      <!-- <div v-if="screenthree">
+        <div>あなたは一人目ですか？</div>
+        <button>はい</button>
+      </div>
+
+      <div v-if="screenfour">
+        
+        <input
+          type="text"
+          v-model="inputAnswer0"
+          maxlength="1"
+        />
+      </div> -->
+
       <input
         type="text"
         v-if="ifNumber[1]"
@@ -95,18 +101,17 @@
         v-model="inputAnswer9"
         maxlength="1"
       />
-
     </div>
 
     <div v-if="first">
-        <h2>Q. {{ NwordQuiz[quiznumber].text }}</h2>
-        <p>残り時間 : {{ count }}</p>
+      <h2>Q. {{ NwordQuiz[quiznumber].text }}</h2>
+      <p>残り時間 : {{ count }}</p>
 
-        <div id="v-model">
-          <div>{{ textfield }}</div>
-          <button v-on:click="Next">次へ</button>
-          <button v-on:click="okButton">OK</button>
-        </div>
+      <div id="v-model">
+        <div>{{ textfield }}</div>
+        <button v-on:click="Next">次へ</button>
+        <button v-on:click="okButton">OK</button>
+      </div>
     </div>
 
     <div v-if="screentwo">
@@ -117,8 +122,8 @@
       <div>{{ feedbacktext }}</div>
     </div>
 
-      <h3>スコア：{{ score }} points </h3>
-    </div>
+    <h3>スコア：{{ score }} points</h3>
+  </div>
 </template>
 
 <script>
@@ -194,9 +199,11 @@ export default {
     }
   },
 
-   created: function() {
-      setInterval(() => { this.count-- }, 1000)
-  }, 
+  created: function () {
+    setInterval(() => {
+      this.count--
+    }, 1000)
+  },
 
   methods: {
     showQuiz(n) {
@@ -228,25 +235,24 @@ export default {
         this.feedbacktext = ""
         this.score -= 50
       }
-        this.screenone = true;
-        this.screentwo = true;
-        this.first = false;
+      this.screenone = true
+      this.screentwo = true
+      this.first = false
     },
-    nameButton: function(){
-        this.screenzero = true;
-        this.screenone = true;
-        this.screentwo = false;
-        this.first = false;
-        this.screenthree = false;
+    nameButton: function () {
+      this.screenzero = false
+      this.screenone = true
+      this.screentwo = false
+      this.first = false
+      this.screenthree = false
     },
 
-    okButton: function(){
-        this.screenone = false;
-        this.screentwo = false;
-        this.first = false;
-        this.screenthree = true;
-    }
-
+    okButton: function () {
+      this.screenone = false
+      this.screentwo = false
+      this.first = false
+      this.screenthree = true
+    },
   },
 }
 </script>

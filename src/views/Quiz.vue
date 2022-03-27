@@ -1,210 +1,125 @@
 <template>
   <div class="app">
-<<<<<<< HEAD
-    <p>参加人数を選択してください</p>
-
-    <div class="suji">
-      <button v-on:click="showQuiz(3)">3</button>
-      <button v-on:click="showQuiz(4)">4</button>
-      <button v-on:click="showQuiz(5)">5</button>
-      <button v-on:click="showQuiz(6)">6</button>
-      <button v-on:click="showQuiz(7)">7</button>
-      <button v-on:click="showQuiz(8)">8</button>
-      <button v-on:click="showQuiz(9)">9</button>
-      <button v-on:click="showQuiz(10)">10</button>
-=======
     <div v-if="screenzero">
       <div class="text-input">
         <p>チーム名を入力してください</p>
         <input type="text" v-model="input" id="input1" placeholder="name" />
         <label for="input1">name</label>
         <a href="#" class="btn-cross" v-on:click="nameButton">OK</a>
-
-        <!--
+      </div>
+      <!--
 
       チーム名とスコアをfirebaseに保存する
       確認画面、あなたは〇〇さんですか？
-      --></div>
+      -->
+    </div>
 
-      <div v-if="screenone">
-        <p>参加人数を選択してください</p>
+    <div v-if="screenone">
+      <p>参加人数を選択してください</p>
 
-        <div class="suji">
-          <a href="#" v-on:click="showQuiz(3)">3</a>
-          <a href="#" v-on:click="showQuiz(4)">4</a>
-          <a href="#" v-on:click="showQuiz(5)">5</a>
-          <a href="#" v-on:click="showQuiz(6)">6</a>
-          <a href="#" v-on:click="showQuiz(7)">7</a>
-          <a href="#" v-on:click="showQuiz(8)">8</a>
-          <a href="#" v-on:click="showQuiz(9)">9</a>
-          <a href="#" v-on:click="showQuiz(10)">10</a>
-        </div>
+      <div class="suji">
+        <a href="#" v-on:click="showQuiz(3)">3</a>
+        <a href="#" v-on:click="showQuiz(4)">4</a>
+        <a href="#" v-on:click="showQuiz(5)">5</a>
+        <a href="#" v-on:click="showQuiz(6)">6</a>
+        <a href="#" v-on:click="showQuiz(7)">7</a>
+        <a href="#" v-on:click="showQuiz(8)">8</a>
+        <a href="#" v-on:click="showQuiz(9)">9</a>
+        <a href="#" v-on:click="showQuiz(10)">10</a>
+      </div>
 
-        <!--
+      <!--
       参加人数3の時、peoplenumber（変数）が
       初期値1、次へのボタンにプラス1する
       3になったらcomputedで処理終了
       v-showでfor文
       参加人数と画面遷移の数が一致したときにスコア算出
       -->
-
-        <input
-          type="text"
-          v-if="ifNumber[0]"
-          v-model="inputAnswer0"
-          maxlength="1"
-        />
-        <input
-          type="text"
-          v-if="ifNumber[1]"
-          v-model="inputAnswer1"
-          maxlength="1"
-        />
-        <input
-          type="text"
-          v-if="ifNumber[2]"
-          v-model="inputAnswer2"
-          maxlength="1"
-        />
-        <input
-          type="text"
-          v-if="ifNumber[3]"
-          v-model="inputAnswer3"
-          maxlength="1"
-        />
-        <input
-          type="text"
-          v-if="ifNumber[4]"
-          v-model="inputAnswer4"
-          maxlength="1"
-        />
-        <input
-          type="text"
-          v-if="ifNumber[5]"
-          v-model="inputAnswer5"
-          maxlength="1"
-        />
-        <input
-          type="text"
-          v-if="ifNumber[6]"
-          v-model="inputAnswer6"
-          maxlength="1"
-        />
-        <input
-          type="text"
-          v-if="ifNumber[7]"
-          v-model="inputAnswer7"
-          maxlength="1"
-        />
-        <input
-          type="text"
-          v-if="ifNumber[8]"
-          v-model="inputAnswer8"
-          maxlength="1"
-        />
-        <input
-          type="text"
-          v-if="ifNumber[9]"
-          v-model="inputAnswer9"
-          maxlength="1"
-        />
-      </div>
->>>>>>> test
     </div>
-    <input
-      type="text"
-      v-if="ifNumber[0]"
-      v-model="inputAnswer0"
-      maxlength="1"
-    />
-    <input
-      type="text"
-      v-if="ifNumber[1]"
-      v-model="inputAnswer1"
-      maxlength="1"
-    />
-    <input
-      type="text"
-      v-if="ifNumber[2]"
-      v-model="inputAnswer2"
-      maxlength="1"
-    />
-    <input
-      type="text"
-      v-if="ifNumber[3]"
-      v-model="inputAnswer3"
-      maxlength="1"
-    />
-    <input
-      type="text"
-      v-if="ifNumber[4]"
-      v-model="inputAnswer4"
-      maxlength="1"
-    />
-    <input
-      type="text"
-      v-if="ifNumber[5]"
-      v-model="inputAnswer5"
-      maxlength="1"
-    />
-    <input
-      type="text"
-      v-if="ifNumber[6]"
-      v-model="inputAnswer6"
-      maxlength="1"
-    />
-    <input
-      type="text"
-      v-if="ifNumber[7]"
-      v-model="inputAnswer7"
-      maxlength="1"
-    />
-    <input
-      type="text"
-      v-if="ifNumber[8]"
-      v-model="inputAnswer8"
-      maxlength="1"
-    />
-    <input
-      type="text"
-      v-if="ifNumber[9]"
-      v-model="inputAnswer9"
-      maxlength="1"
-    />
+
+    <div v-if="screentwo">
+      <input
+        type="text"
+        v-if="ifNumber[0]"
+        v-model="inputAnswer0"
+        maxlength="1"
+      />
+      <input
+        type="text"
+        v-if="ifNumber[1]"
+        v-model="inputAnswer1"
+        maxlength="1"
+      />
+      <input
+        type="text"
+        v-if="ifNumber[2]"
+        v-model="inputAnswer2"
+        maxlength="1"
+      />
+      <input
+        type="text"
+        v-if="ifNumber[3]"
+        v-model="inputAnswer3"
+        maxlength="1"
+      />
+      <input
+        type="text"
+        v-if="ifNumber[4]"
+        v-model="inputAnswer4"
+        maxlength="1"
+      />
+      <input
+        type="text"
+        v-if="ifNumber[5]"
+        v-model="inputAnswer5"
+        maxlength="1"
+      />
+      <input
+        type="text"
+        v-if="ifNumber[6]"
+        v-model="inputAnswer6"
+        maxlength="1"
+      />
+      <input
+        type="text"
+        v-if="ifNumber[7]"
+        v-model="inputAnswer7"
+        maxlength="1"
+      />
+      <input
+        type="text"
+        v-if="ifNumber[8]"
+        v-model="inputAnswer8"
+        maxlength="1"
+      />
+      <input
+        type="text"
+        v-if="ifNumber[9]"
+        v-model="inputAnswer9"
+        maxlength="1"
+      />
+    </div>
 
     <div v-if="first">
       <h2>Q. {{ NwordQuiz[quiznumber].text }}</h2>
 
       <div id="v-model">
         <div>{{ textfield }}</div>
-<<<<<<< HEAD
         <button v-on:click="feedback">OK</button>
-=======
-        <button v-on:click="Next">次へ</button>
-        <a href="#" class="btn-cross" v-on:click="feedback" :key="feedback"
-          >OK</a
-        >
-      </div>
-    </div>
->>>>>>> test
 
         <div>{{ feedbacktext }}</div>
 
         <h1>答え{{ correctanswer }}</h1>
 
-<<<<<<< HEAD
-        <h3>スコア{{ quizzes.score }}</h3>
+        <h3>スコア：{{ score }} points</h3>
       </div>
-=======
-      <h3>スコア：{{ score }} points</h3>
->>>>>>> test
     </div>
   </div>
 </template>
 
 <script>
 import { doc, setDoc } from "firebase/firestore"
-import { db } from "./firebase.js"
+import { db } from "../../firebase.js"
 
 export default {
   data() {
@@ -234,15 +149,11 @@ export default {
       userAnswer: "",
       n: 0,
       quiznumber: 0,
-      first: false,
       NwordQuiz: [],
       correctanswer: "",
       feedbacktext: "",
-<<<<<<< HEAD
-=======
       score: 0,
       QuizUser: [],
->>>>>>> test
       quizzes: [
         {
           text: "3",
@@ -275,44 +186,11 @@ export default {
           word: 5,
         },
       ],
+      screenzero: true,
+      screenone: false,
+      screentwo: false,
+      first: false,
     }
-  },
-
-  async upload(event) {
-    const files = event.target.files || event.dataTransfer.files
-    const file = files[0]
-
-    if (this.checkFile(file)) {
-      const picture = await this.getBase64(file)
-      this.$emit("input", picture)
-    }
-  },
-
-  checkFile(file) {
-    let result = true
-    const SIZE_LIMIT = 5000000 // 5MB
-    // ローカルマシンからの読み込みをキャンセルしたら処理中断
-    if (!file) {
-      result = false
-    }
-    // jpeg か png 関連ファイル以外は受付けない
-    if (file.type !== "image/jpeg" && file.type !== "image/png") {
-      result = false
-    }
-    // 上限サイズより大きければ受付けない
-    if (file.size > SIZE_LIMIT) {
-      result = false
-    }
-    return result
-  },
-
-  getBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = () => resolve(reader.result)
-      reader.onerror = (error) => reject(error)
-    })
   },
 
   methods: {
@@ -320,9 +198,11 @@ export default {
       for (let i = 0; i < n; i++) {
         this.ifNumber[i] = true
       }
+      this.screenone = false
+      this.screentwo = true
+
       this.NwordQuiz = this.quizzes.filter((quiz) => quiz.word === n)
       this.quiznumber = Math.floor(Math.random() * this.NwordQuiz.length)
-      this.first = true
     },
     feedback() {
       this.userAnswer =
@@ -343,23 +223,26 @@ export default {
       } else {
         this.feedbacktext = "不正解です！"
       }
-<<<<<<< HEAD
-=======
       this.screenone = true
       this.screentwo = true
       this.first = false
     },
 
     nameButton: function () {
-      setDoc(doc(db, "QuizUser", `${this.input}` ), {
+      // setDoc(doc(db, "QuizUser", `${this.input}`), {
+      //   userName: this.input,
+      //   score: this.score,
+      // })
+      this.screenone = true
+      this.screenzero = false
+    },
+    // 正誤判定、スコア算出後に↓が動くようにする
+    storeFirebase() {
+      //firebaseにチーム名とスコアを保存する処理
+      setDoc(doc(db, "QuizUser", `${this.input}`), {
         userName: this.input,
         score: this.score,
       })
-      this.screenzero = true
-      this.screenone = true
-      this.screentwo = false
-      this.first = false
->>>>>>> test
     },
   },
 }
