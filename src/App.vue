@@ -1,16 +1,14 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
     <router-link to="/Quiz">Quiz</router-link> |
     <router-link to="/Ishisotsu">Ishisotsu</router-link> |
     <router-link to="/irasuto">Irasuto</router-link> |
-
   </div>
   <router-view />
 </template>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -21,6 +19,7 @@
 
 #nav {
   padding: 30px;
+  position: fixed;
 }
 
 #nav a {
@@ -31,6 +30,4 @@
 #nav a.router-link-exact-active {
   color: #42b983;
 }
-
 </style>
-
