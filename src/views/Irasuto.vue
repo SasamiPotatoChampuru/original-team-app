@@ -1,87 +1,125 @@
 <template>
-  
-  <div class="irasuto" v-show="zero">
-    <h1>イラストレーター</h1>
-    <p>絵を書いて絵を当てるゲーム</p>
-    <p class="yohaku">GO↓</p>
-    <button @click="startButton">スタート！</button>
+  <div v-show="zero">
+    <div class="irasuto_back_1">
+      <div class="irasuto">
+        <h1>イラストレーター</h1>
+        <p>※名前を入力してください</p>
+        1人目<input type="text" v-model="inputName" />
+        <p></p>
+        2人目<input type="text" v-model="inputName2" />
+        <p class="yohaku">GO↓</p>
+        <button @click="startButton">スタート！</button>
+      </div>
+    </div>
   </div>
   <!--描画画面-->
-  <div v-show="first" class="black" v-bind:key="page">
-    <h1 v-show="count > 0">お題→{{ words[number] }}</h1>
-    <p v-if="count > 0"><span class="name" v-if="page == 1 || page == 3">Aさん</span>
-     <span class="name" v-else>Bさん</span>
-    残り時間 : {{ count }}</p>
+  <div v-show="first" class="black irasuto_back_1" v-bind:key="page">
+    <div class="control">
+      <h1 v-show="count > 0">お題→{{ words[number] }}</h1>
+      <p v-if="count > 0">
+        <span class="name" v-if="page == 1 || page == 3"
+          >{{ inputName }}さん</span
+        >
+        <span class="name" v-else>{{ inputName2 }}さん</span>
+        残り時間 : {{ count }}
+      </p>
 
-    <h1 v-show="count <= 0">終了~!!</h1>
-    <button v-show="count <= 0" class="lan" @click="finishButton">終了</button>
-    <!--キャンバス表示-->
-    <canvas
-      style="border: 4mm ridge gray"
-      id="canvas"
-      @mousemove="write"
-      @mousedown="dragStart"
-      @mouseup="dragEnd"
-      @mouseout="dragEnd"
-      v-show="count > 0"
-    >
-    </canvas>
+      <h1 v-show="count <= 0">終了~!!</h1>
+      <button v-show="count <= 0" class="lan" @click="finishButton">
+        終了
+      </button>
+      <!--キャンバス表示-->
+      <canvas
+        class="canvas_color"
+        style="border: 4mm ridge gray"
+        id="canvas"
+        @mousemove="write"
+        @mousedown="dragStart"
+        @mouseup="dragEnd"
+        @mouseout="dragEnd"
+        v-show="count > 0"
+      >
+      </canvas>
 
-    <!--オプション-->
-    <div v-if="count >= 0.5" class="flex">
-      <p>{{ text }}</p>
-      <img
-        v-show="change_1"
-        class="eraser_logo"
-        src="../assets/image/images.png"
-      />
-      <img v-show="change_2" class="pen_logo" src="../assets/image/pen.png" />
-      <div class="main">
-        <div>
-          <button class="red_button" @click="pen_red">赤</button>
-          <button class="blue_button" @click="pen_blue">青</button>
-          <button class="black_button" @click="pen">黒</button>
-          太さ:<button @click="penLineDown">-</button>
-          {{ pen_line_width }}
-          <button @click="penLineUp">+</button>
+      <!--オプション-->
+      <div v-if="count >= 0.5" class="flex">
+        <p>{{ text }}</p>
+        <img
+          v-show="change_1"
+          class="eraser_logo"
+          src="../assets/image/images.png"
+        />
+        <img v-show="change_2" class="pen_logo" src="../assets/image/pen.png" />
+        <div class="main">
+          <div>
+            <button class="red_button" @click="pen_red">赤</button>
+            <button class="blue_button" @click="pen_blue">青</button>
+            <button class="black_button" @click="pen">黒</button>
+            太さ:<button @click="penLineDown">-</button>
+            {{ pen_line_width }}
+            <button @click="penLineUp">+</button>
+          </div>
+
+          <div>
+            <button class="eraser" @click="eraser">消しゴム</button>
+            太さ:<button @click="eraserLineDown">-</button>
+            {{ eraser_line_width }}
+            <button @click="eraserLineUp">+</button>
+          </div>
+          <button class="clear" @click="clear">クリア</button>
         </div>
-
-        <div>
-          <button class="eraser" @click="eraser">消しゴム</button>
-          太さ:<button @click="eraserLineDown">-</button>
-          {{ eraser_line_width }}
-          <button @click="eraserLineUp">+</button>
-        </div>
-        <button class="clear" @click="clear">クリア</button>
+        <button class="lan" @click="finishButton">終了</button>
       </div>
-      <button class="lan" @click="finishButton">終了</button>
     </div>
   </div>
 
   <!--解答画面-->
-  <div v-if="second">
-    <h1 v-if="page == 1 || page == 3">あなたは解答者(Bさん)ですか？</h1>
-    <h1 v-else>あなたは解答者(Aさん)ですか？</h1>
+  <div v-if="second" class="irasuto_back_1">
+    <h1 v-if="page == 1 || page == 3">
+      あなたは解答者({{ inputName2 }}さん)ですか？
+    </h1>
+    <h1 v-else>あなたは解答者({{ inputName }}さん)ですか？</h1>
     <button @click="nextButton" id="list1">はい</button>
-    <div id="img-box"><img id="newImg" /></div>
     <div v-show="maru">
-      <p>答えを<span>カタカナ</span>で入力してください</p>
+      <div id="img-box"><img id="newImg" class="sousyoku" /></div>
+      <p class="katakana">答えを<span>カタカナ</span>で入力してください</p>
       <input type="text" v-model="input" />
       <button @click="decideButton">決定</button>
+      <span class="circle1"><h1 class="font">?</h1></span>
+      <span class="circle2"><h1 class="font">?</h1></span>
     </div>
   </div>
 
   <!--結果画面-->
   <div v-if="third">
-    <div class="result">
-      <p class="kasen">{{ tarn }}問目</p>
-      <h1 class="yes">大正解！</h1>
-      <h2>SCORE:{{ score }}</h2>
-      <button class="next" @click="next_2Button">次へ</button>
+    <div class="irasuto_back_1">
+      <div class="irasuto">
+        <p>{{ tarn }}問目</p>
+        <h1 class="yes">大正解！</h1>
+        <button class="next" @click="next_2Button">次へ</button>
+        <span class="box1"></span>
+        <span class="box2"></span>
+        <span class="box3"></span>
+        <span class="box4"></span>
+        <span class="box5"></span>
+        <span class="item_batu_1"><h1>〇</h1></span>
+        <span class="item_batu_2"><h1>〇</h1></span>
+        <span class="item_batu_3"><h1>〇</h1></span>
+        <span class="item_batu_4"><h1>〇</h1></span>
+      </div>
     </div>
   </div>
-  <div v-if="third_2">
-    <div class="result">
+  <div v-if="third_2" class="irasuto_back_1">
+    <span class="box1"></span>
+    <span class="box2"></span>
+    <span class="box3"></span>
+    <span class="box4"></span>
+    <span class="box5"></span>
+    <span class="item_batu_1"><h1>×</h1></span>
+    <span class="item_batu_2"><h1>×</h1></span>
+    <span class="item_batu_3"><h1>×</h1></span>
+    <span class="item_batu_4"><h1>×</h1></span>
+    <div class="irasuto">
       <p>{{ tarn }}問目</p>
       <h1 class="no">不正解！</h1>
       <button class="next" @click="next_2Button">次へ</button>
@@ -89,15 +127,24 @@
   </div>
 
   <!--結果表示画面-->
-  <div v-if="fourth" class="result_2">
-    <u><h1>現在結果</h1></u>
-    <p>Aさん→SCORE：{{ total_1 }}</p>
-    <p>Bさん→SCORE：{{ total_2 }}</p>
-    <button @click="resetButton">次へ</button>
+  <div class="irasuto_back">
+    <div v-if="fourth" class="irasuto">
+      <h1>現在結果</h1>
+      <span class="box1"></span>
+      <span class="box2"></span>
+      <span class="box3"></span>
+      <span class="box4"></span>
+      <span class="box5"></span>
+      <p>{{ inputName }}さん→SCORE：{{ total_1 }}点</p>
+      <p>{{ inputName2 }}さん→SCORE：{{ total_2 }}点</p>
+      <button @click="resetButton">次へ</button>
+    </div>
   </div>
 </template>
 
 <script>
+import { doc, setDoc } from "firebase/firestore"
+import { db } from "../../firebase.js"
 
 export default {
   components: {},
@@ -144,12 +191,13 @@ export default {
       total_1: 0,
       total_2: 0,
       db: null,
+      inputName: "",
+      inputName2: "",
+      userData: [],
     }
   },
 
-  created(){
- 
-  },
+  created() {},
 
   mounted() {
     //キャンバスの作成及び設定
@@ -159,7 +207,7 @@ export default {
     // 文字の太さwatch
     pen_line_width(val) {
       this.context.lineWidth = val
-    }, 
+    },
 
     eraser_line_width(val) {
       this.context.lineWidth = val
@@ -174,6 +222,9 @@ export default {
   },
 
   methods: {
+    start: function () {
+      ;(this.mainasu = false), (this.first = true)
+    },
     startButton() {
       this.zero = false
       this.first = true
@@ -183,14 +234,14 @@ export default {
       this.canvas = document.querySelector("#canvas")
       this.context = this.canvas.getContext("2d")
       this.context.lineCap = "round"
+      this.context.fillStyle = "white"
+      this.context.fillRect(0, 0, this.canvas.width, this.canvas.height)
       this.canvas.width = 500
-      this.canvas.height = 280
+      this.canvas.height = 250
       this.number = Math.floor(0 + Math.random() * this.words.length)
       this.timer_count = setInterval(() => {
-      this.count--
+        this.count--
       }, 1000)
-
-      
     },
     write: function (e) {
       let x = e.layerX
@@ -203,20 +254,20 @@ export default {
     finishButton: function () {
       this.second = true
       this.first = false
-      this.sub_count = this.count;
+      this.sub_count = this.count
       clearInterval(this.timer_count)
       this.count = 60
     },
 
-    score_calc: function() {
-      if(this.sub_count >= 51) {
+    score_calc: function () {
+      if (this.sub_count >= 51) {
         this.score -= (60 - this.sub_count) * 3
-      }else if(this.sub_count >= 41 && this.sub_count <= 50){
+      } else if (this.sub_count >= 41 && this.sub_count <= 50) {
         this.score -= (50 - this.sub_count) * 2.25
-      }else if(this.sub_count >= 21 && this.sub_count <= 40){
+      } else if (this.sub_count >= 21 && this.sub_count <= 40) {
         this.score -= (40 - this.sub_count) * 0.75
-      }else if(this.sub_count >= 0 && this.sub_count <= 20){
-         this.score -= (20 - this.sub_count) * 0.375
+      } else if (this.sub_count >= 0 && this.sub_count <= 20) {
+        this.score -= (20 - this.sub_count) * 0.375
       }
     },
 
@@ -242,11 +293,32 @@ export default {
         this.score -= 100
       }
       this.score_calc()
-      if(this.page == 1 || this.page == 3){
+      if (this.page == 1 || this.page == 3) {
         this.total_1 += this.score
-      }else{
+        if (this.page == 3) {
+          this.setDoc_1()
+        }
+      } else if (this.page == 2 || this.page == 4) {
         this.total_2 += this.score
+        if (this.page == 4) {
+          this.setDoc_2()
+        }
       }
+      this.input = ""
+    },
+    setDoc_1: async function () {
+      const a = await setDoc(doc(db, "IrasutoUser", `{this.inputName}`), {
+        userName: this.inputName,
+        score: this.total_1,
+      })
+      console.log(a)
+    },
+    setDoc_2: async function () {
+      const b = await setDoc(doc(db, "IrasutoUser", `{this.inputName2}`), {
+        userName: this.inputName2,
+        score: this.total_2,
+      })
+      console.log(b)
     },
 
     //リセットボタン
@@ -339,8 +411,8 @@ export default {
       }
     },
     next_2Button: function () {
-       this.page++
-      if(this.page != 5){
+      this.page++
+      if (this.page != 5) {
         this.first = false
         this.second = false
         this.third = false
@@ -348,21 +420,20 @@ export default {
         this.maru = false
         this.fourth = true
         console.log(this.page)
-      }else{
+      } else {
         this.first = false
         this.second = false
         this.third = false
         this.third_2 = false
         this.maru = false
-        this.fifth = true
-
+        this.$router.push("Ranking")
       }
     },
-}
+  },
 }
 </script>
 
-<style>
+<style scoped>
 canvas {
   position: relative;
   border: 3px solid #000;
@@ -468,6 +539,210 @@ span {
 
 .name {
   color: black;
-  background-color: orange
+  background-color: white;
+}
+
+.irasuto {
+  margin: 50px auto;
+  background-color: white;
+  width: 300px;
+  height: 300px;
+  padding-top: 20px;
+}
+
+h1,
+p,
+h2 {
+  color: black;
+}
+
+.canvas_color {
+  background-color: white;
+}
+
+.irasuto_back_1 {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    120deg,
+    #3ae4de 30%,
+    #fff9a3 30% 60%,
+    #f0604d 60% 80%,
+    rgb(36, 13, 39) 80% 20%
+  );
+  padding: 50px 10px 0 0;
+  background-repeat: no-repeat;
+}
+
+.sousyoku {
+  width: 500px;
+  height: 250px;
+  border-radius: 80%;
+  background: white;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+.katakana {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.box1 {
+  position: absolute;
+  top: 100px;
+  left: 150px;
+  display: inline-block;
+  width: 100px;
+  margin: 50px;
+  height: 100px;
+  margin: 30px;
+  background: rgb(247, 236, 177);
+  animation: 3s linear infinite rotation1;
+}
+
+.box2 {
+  position: absolute;
+  top: 100px;
+  left: 950px;
+  display: inline-block;
+  width: 100px;
+  margin: 50px;
+  height: 100px;
+  margin: 30px;
+  background: rgb(175, 238, 173);
+  animation: 3s linear infinite rotation1;
+}
+
+.box3 {
+  position: absolute;
+  top: 350px;
+  left: 150px;
+  display: inline-block;
+  width: 100px;
+  margin: 50px;
+  height: 100px;
+  margin: 30px;
+  background: rgb(252, 158, 129);
+  animation: 3s linear infinite rotation1;
+}
+
+.box4 {
+  position: absolute;
+  top: 350px;
+  left: 950px;
+  display: inline-block;
+  width: 100px;
+  margin: 50px;
+  height: 100px;
+  margin: 30px;
+  background: rgb(33, 223, 236);
+  animation: 3s linear infinite rotation1;
+}
+
+@keyframes rotation1 {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.circle1 {
+  border-radius: 100%;
+  box-sizing: border-box;
+  border: 10px dotted gold;
+  animation: 3s linear infinite rotation1;
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  margin: 50px;
+  position: absolute;
+  top: 250px;
+  left: 70px;
+}
+
+.font {
+  font-size: 55px;
+}
+
+.circle2 {
+  border-radius: 100%;
+  box-sizing: border-box;
+  border: 10px dotted gold;
+  animation: 3s linear infinite rotation1;
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  margin: 50px;
+  position: absolute;
+  top: 250px;
+  left: 950px;
+}
+
+.item_batu_1 {
+  position: absolute;
+  left: 200px;
+  color: red;
+  animation: come-down-anim-1 2s linear infinite;
+  font-size: 50px;
+}
+
+@keyframes come-down-anim-1 {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+.item_batu_2 {
+  position: absolute;
+  left: 480px;
+  color: red;
+  animation: come-down-anim-2 3s linear infinite;
+  font-size: 50px;
+}
+
+@keyframes come-down-anim-2 {
+  0% {
+    transform: translateY(-200%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+.item_batu_3 {
+  position: absolute;
+  left: 710px;
+  color: red;
+  animation: come-down-anim-3 2s linear infinite;
+  font-size: 50px;
+}
+
+@keyframes come-down-anim-3 {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+.item_batu_4 {
+  position: absolute;
+  left: 950px;
+  color: red;
+  animation: come-down-anim-4 2s linear infinite;
+  font-size: 50px;
+}
+
+@keyframes come-down-anim-4 {
+  0% {
+    transform: translateY(-200%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
 }
 </style>
