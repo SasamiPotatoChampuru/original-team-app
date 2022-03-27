@@ -105,17 +105,20 @@
         <div id="v-model">
           <div>{{ textfield }}</div>
           <button v-on:click="Next">次へ</button>
-          <button v-on:click="feedback">OK</button>
+          <button v-on:click="okButton">OK</button>
         </div>
-      </div>
+    </div>
 
     <div v-if="screentwo">
       <div>{{ textfield }}</div>
+    </div>
+
+    <div v-if="screenthree">
       <div>{{ feedbacktext }}</div>
+    </div>
 
       <h3>スコア：{{ score }} points </h3>
     </div>
-  </div>
 </template>
 
 <script>
@@ -151,6 +154,7 @@ export default {
       screenzero: true,
       screenone: false,
       screentwo: false,
+      screenthree: false,
       NwordQuiz: [],
       feedbacktext: "",
       score: 0,
@@ -229,10 +233,20 @@ export default {
         this.first = false;
     },
     nameButton: function(){
+        this.screenzero = true;
         this.screenone = true;
         this.screentwo = false;
         this.first = false;
+        this.screenthree = false;
+    },
+
+    okButton: function(){
+        this.screenone = false;
+        this.screentwo = false;
+        this.first = false;
+        this.screenthree = true;
     }
+
   },
 }
 </script>
