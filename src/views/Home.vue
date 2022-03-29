@@ -36,7 +36,7 @@ export default {
       this.$router.push("Quiz")
     },
     rensou: function () {
-      this.$router.push("")
+      this.$router.push("Ishisotsu")
     },
     ranking: function() {
       this.$router.push("ranking")

@@ -12,15 +12,14 @@
     <div v-if="screenzero">
       <div class="text-input">
         <p>チーム名を入力してください</p>
-        <input type="text" id="input1" placeholder="name" />
+        <input type="text" v-model ="input" id="input1" placeholder="name" />
         <label for="input1">name</label>
         <a href="#" class="btn-cross" v-on:click="showQuiz(5)">OK</a>
       </div>
     </div>
 
     <div v-if="screenone">
-      <h2>Q. {{ NwordQuiz[quiznumber].text }}</h2>
-        <div>{{ textfield }}</div>
+      <h2>Q. {{quizcount}} {{ NwordQuiz[quiznumber].text }}</h2>
         <a href="#" class="btn-cross" v-on:click="questionButton">回答開始</a>
     </div>
 
@@ -122,7 +121,13 @@
 
         <h3>スコア：{{ score }} points</h3>
 
-        <a href="#" class="btn-cross" v-on:click="restartbutton">リトライ</a>
+        <a href="#" class="btn-cross" v-on:click="restartButton" v-if="this.quizcount < 5">リトライ</a>
+        <a href="#" class="btn-cross" v-on:click="finishButton" v-if="this.quizcount >= 5">終了</a>
+</div>
+
+<div v-if="screenseven">
+<h2>合計スコア: {{score}}</h2>
+<router-link to="/ranking">Rankingを見る</router-link> 
 </div>
 
 </div>
@@ -131,8 +136,8 @@
 
 
 <script>
-//import { doc, setDoc } from "firebase/firestore"
-//import { db } from "../../firebase.js"
+import { doc, setDoc } from "firebase/firestore"
+import { db } from "../../firebase.js"
 
 export default {
   
@@ -417,6 +422,8 @@ export default {
       yoninme: false,
       goninme: false,
       screensix: false,
+      screenseven: false,
+      quizcount: 1,
     }
   },
 
@@ -427,6 +434,7 @@ export default {
         this.ifNumber[i] = true
       }
       this.screenone = true
+      this.screenzero = false
       this.NwordQuiz = this.quizzes.filter((quiz) => quiz.word === n)
       this.quiznumber = Math.floor(Math.random() * this.NwordQuiz.length)
     },
@@ -471,6 +479,7 @@ export default {
       this.screenone = false
       this.screentwo = false
       this.screensix = true
+
     },
 
       questionButton: function () {
@@ -679,26 +688,22 @@ export default {
     },
 
     restartButton: function () {
-      console.log(this.screenzero, this.screensix)
-      this.screenzero = false
-      
-      this.screenone = true
-      this.ichiban = false
-      this.niban = false
-      this.sanban = false
-      this.yonban = false
-      this.goban = false
-      this.hitorime = false
-      this.hutarime = false
-      this.sanninme = false
-      this.yoninme = false
-      this.goninme = false
-      this.screenone = false
-      this.screentwo = false
+      this.quizcount++
+      this.textfield =""
+      this.showQuiz(5)
       this.screensix = false
-    
+      this.screenone = true
+      
     },
 
+     finishButton: function () {
+       setDoc(doc(db, "QuizUser", `${this.input}`), {
+      userName: this.input,
+      score: this.score,
+      })
+      this.screensix = false
+      this.screenseven = true
+    },
     // 正誤判定、スコア算出後に↓が動くようにする
     
     //storeFirebase() {
