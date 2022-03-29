@@ -1,10 +1,4 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/Quiz">Quiz</router-link> |
-    <router-link to="/Ishisotsu">Ishisotsu</router-link> |
-    <router-link to="/irasuto">Irasuto</router-link> |
-  </div>
   <router-view />
 </template>
 

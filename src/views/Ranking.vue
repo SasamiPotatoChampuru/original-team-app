@@ -1,13 +1,14 @@
 <template>
   <div class="design_ranking">
     <div v-show="zero">
-      <h1>ランキング</h1>
+      <button @click="top" class="top">TOP</button>
+      <h1>🎉ランキング🎉</h1>
       <div class="ranking_flex">
         <div class="irasuto_ranking">
           <h1>イラスト</h1>
           <p>最高点</p>
           <button @click="check_irasuto" class="ranking_button">
-            結果を見る！
+            結果を見る
           </button>
           <ul>
             <li v-for="(list, index) in userData" :key="index">
@@ -18,9 +19,9 @@
         <div class="quiz_ranking">
           <h1>クイズ</h1>
           <p>最高点</p>
-          <button class="ranking_button">結果を見る！</button>
+          <button @click="check_quiz" class="ranking_button">結果を見る</button>
           <ul>
-            <li v-for="(list, index) in userData" :key="index">
+            <li v-for="(list, index) in userData_2" :key="index">
               <h2>{{ list.score }}点！</h2>
             </li>
           </ul>
@@ -28,7 +29,7 @@
         <div class="rensou_ranking">
           <h1>連想ゲーム</h1>
           <p>最高点</p>
-          <button class="ranking_button">結果を見る！</button>
+          <button class="ranking_button">結果を見る</button>
           <ul>
             <li v-for="(list, index) in userData" :key="index">
               <div class="container">
@@ -43,20 +44,48 @@
     <!-- イラストランキング詳細画面 -->
     <div v-show="irasuto_status">
       <div class="irasuto_hyouzi">
-        <h1>ランキング</h1>
-        <ol class="style">
+        <h1 class="style">🎉~ランキング~🎉</h1>
+        <div></div>
+        <ul class="style_2">
           <li v-for="(list, index) in userData" :key="index">
-            {{ list.userName }}さん⇒ {{ list.score }}点！
+            <div v-if="index == 0">
+                🥇1位{{ list.userName }}さん⇒ {{ list.score }}点！
+            </div>
+            <div v-if="index == 1">
+                🥈2位{{ list.userName }}さん⇒ {{ list.score }}点！
+            </div>
+            <div v-if="index == 2">
+                🥉3位{{ list.userName }}さん⇒ {{ list.score }}点！
+            </div>
+             <div v-if="index ==3">
+               <p>↓</p>
+            </div>
+             <div v-if="index >= 4">
+               {{index}}位{{ list.userName }}さん⇒ {{ list.score }}点！
+            </div>
+    
           </li>
-        </ol>
-
-        <div class="place">
-          <button @click="returnButton">←戻る</button>
-          <button @click="topButton">TOPへ</button>
+        </ul>
+          <button @click="topButton" class="top">TOP</button>
         </div>
       </div>
     </div>
-  </div>
+
+    <div v-show="quiz_status">
+      <div class="quiz_hyouzi">
+        <h1>🎉~ランキング~🎉</h1>
+        <div></div>
+        <ul class="style">
+          <li v-for="(list, index_2) in userData_2" :key="index_2">
+            {{ list.userName }}さん⇒ {{ list.score }}点！
+          </li>
+        </ul>
+          <button @click="topButton" class="top">TOP</button>
+        </div>
+      </div>
+
+    
+      
 </template>
 
 <script>
@@ -69,6 +98,7 @@ export default {
       userData: [],
       userData_2: [],
       irasuto_status: false,
+      quiz_status: false,
       zero: true,
     }
   },
@@ -97,11 +127,11 @@ export default {
         this.userData.push(doc.data())
       })
     },
-    getDoc_quiz: async function () {
+    getDoc_quiz_1: async function () {
       const q = query(
         collection(db, "QuizUser"),
         orderBy("score", "desc"),
-        limit()
+        limit(1)
       )
       const querySnapshot = await getDocs(q)
       querySnapshot.forEach((doc) => {
@@ -109,11 +139,11 @@ export default {
         this.userData_2.push(doc.data())
       })
     },
-    getDoc_quiz_1: async function () {
+    getDoc_quiz_2: async function () {
       const q = query(
         collection(db, "QuizUser"),
         orderBy("score", "desc"),
-        limit(1)
+        limit(100)
       )
       const querySnapshot = await getDocs(q)
       querySnapshot.forEach((doc) => {
@@ -127,15 +157,21 @@ export default {
       this.getDoc()
     },
     check_quiz: function () {
-      this.status++
-      this.getDoc_quiz()
+      this.zero = false
+      this.quiz_status = true
+      this.getDoc_quiz_2()
     },
-    returnButton: function () {
-      ;(this.zero = true), (this.irasuto_status = false)
-    },
+
     topButton: function () {
+      this.userData = "",
+      this.userData_2 = ""
       this.$router.push("/")
     },
+    top: function() {
+       this.userData = "",
+       this.userData_2 = ""
+       this.$router.push("/")
+    }
   },
   mounted() {
     this.getDoc_1()
@@ -156,38 +192,48 @@ export default {
     rgb(5, 6, 104) 65%
   );
   padding: 50px 10px 0 0;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .irasuto_ranking {
-  height: 350px;
+  height: 300px;
   width: 250px;
   background-color: white;
   margin-top: 30px;
   padding-top: 15px;
+  border-radius: 50px;
 }
 .quiz_ranking {
-  height: 350px;
+  height: 300px;
   width: 250px;
   background-color: white;
   margin-top: 30px;
   padding-top: 15px;
+  border-radius: 50px;
 }
 .rensou_ranking {
-  height: 350px;
+  height: 300px;
   width: 250px;
   background-color: white;
   margin-top: 30px;
   padding-top: 15px;
+  border-radius: 50px;
 }
 
 .ranking_flex {
   display: flex;
   justify-content: space-around;
+  border-radius: 50px;
 }
 
 .ranking_button {
   position: relative;
   top: 100px;
+  background-color: yellow;
+  border-radius: 50px;
 }
 
 ul {
@@ -208,8 +254,28 @@ ul {
   padding-top: 20px;
 }
 
-.place {
-  position: relative;
-  top: 300px;
+.quiz_hyouzi {
+  width: 500px;
+  height: 500px;
+  background: white;
+  margin: 0 auto;
+  padding-top: 20px;
 }
+
+.top {
+  position: absolute;
+  top: 50px;
+  left: 1020px;
+  padding: 10px;
+  background: rgb(190, 188, 188);
+}
+
+.style {
+  padding-bottom: 30px;
+}
+
+
+
+
+
 </style>
