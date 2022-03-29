@@ -1,13 +1,13 @@
 <template>
   <div v-show="zero">
     <div class="irasuto_back_1">
-      <div class="irasuto">
-        <h1>イラストレーター</h1>
+      <div class="irasuto orange">
+        <h1>イラスト</h1>
         <p>※名前を入力してください</p>
         1人目<input type="text" v-model="inputName" />
         <p></p>
         2人目<input type="text" v-model="inputName2" />
-        <p class="yohaku">GO↓</p>
+        <p class="yohaku">１人目の人準備完了↓</p>
         <button @click="startButton">スタート！</button>
       </div>
     </div>
@@ -85,17 +85,18 @@
       <p class="katakana">答えを<span>カタカナ</span>で入力してください</p>
       <input type="text" v-model="input" />
       <button @click="decideButton">決定</button>
-      <span class="circle1"><h1 class="font">?</h1></span>
-      <span class="circle2"><h1 class="font">?</h1></span>
+      <span class="circle1"><h1 class="font">❔</h1></span>
+      <span class="circle2"><h1 class="font">❔</h1></span>
     </div>
   </div>
 
   <!--結果画面-->
   <div v-if="third">
     <div class="irasuto_back_1">
-      <div class="irasuto">
+      <div class="irasuto red">
         <p>{{ tarn }}問目</p>
         <h1 class="yes">大正解！</h1>
+        <h2>おめでとう～🎉</h2>
         <button class="next" @click="next_2Button">次へ</button>
         <span class="box1"></span>
         <span class="box2"></span>
@@ -119,27 +120,35 @@
     <span class="item_batu_2"><h1>×</h1></span>
     <span class="item_batu_3"><h1>×</h1></span>
     <span class="item_batu_4"><h1>×</h1></span>
-    <div class="irasuto">
+    <div class="irasuto blue">
       <p>{{ tarn }}問目</p>
       <h1 class="no">不正解！</h1>
+      <h2>残念。。😢</h2>
       <button class="next" @click="next_2Button">次へ</button>
     </div>
   </div>
 
   <!--結果表示画面-->
-  <div class="irasuto_back">
-    <div v-if="fourth" class="irasuto">
-      <h1>現在結果</h1>
-      <span class="box1"></span>
-      <span class="box2"></span>
-      <span class="box3"></span>
-      <span class="box4"></span>
-      <span class="box5"></span>
-      <p>{{ inputName }}さん→SCORE：{{ total_1 }}点</p>
-      <p>{{ inputName2 }}さん→SCORE：{{ total_2 }}点</p>
-      <button @click="resetButton">次へ</button>
+    <div v-if="fourth" class="">
+      <div class="irasuto_back_2">
+        <div class="irasuto_2">
+          <h1>現在結果</h1>
+          <span class="box1"></span>
+          <span class="box2"></span>
+          <span class="box3"></span>
+          <span class="box4"></span>
+          <span class="box5"></span>
+          <p>{{ inputName }}さん→SCORE：{{ total_1 }}点</p>
+          <p>{{ inputName2 }}さん→SCORE：{{ total_2 }}点</p>
+          <p>ファイト～🔥🔥！！</p>
+          <p>※交代してクリック↓</p>
+          <button @click="resetButton">次へ</button>
+        </div>
+      
+      </div>
+      
     </div>
-  </div>
+
 </template>
 
 <script>
@@ -307,14 +316,14 @@ export default {
       this.input = ""
     },
     setDoc_1: async function () {
-      const a = await setDoc(doc(db, "IrasutoUser", `{this.inputName}`), {
+      const a = await setDoc(doc(db, "IrasutoUser", `${this.inputName}`), {
         userName: this.inputName,
         score: this.total_1,
       })
       console.log(a)
     },
     setDoc_2: async function () {
-      const b = await setDoc(doc(db, "IrasutoUser", `{this.inputName2}`), {
+      const b = await setDoc(doc(db, "IrasutoUser", `${this.inputName2}`), {
         userName: this.inputName2,
         score: this.total_2,
       })
@@ -548,6 +557,7 @@ span {
   width: 300px;
   height: 300px;
   padding-top: 20px;
+  text-align: center;
 }
 
 h1,
@@ -572,6 +582,28 @@ h2 {
   );
   padding: 50px 10px 0 0;
   background-repeat: no-repeat;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.irasuto_back_2 {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    120deg,
+    #3ae4de 30%,
+    #fff9a3 30% 60%,
+    #f0604d 60% 80%,
+    rgb(36, 13, 39) 80% 20%
+  );
+  padding: 50px 10px 0 0;
+  background-repeat: no-repeat;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .sousyoku {
@@ -664,7 +696,8 @@ h2 {
 }
 
 .font {
-  font-size: 55px;
+  font-size: 60px;
+  margin: 0 auto;
 }
 
 .circle2 {
@@ -745,4 +778,38 @@ h2 {
     transform: translateY(200%);
   }
 }
+
+.irasuto_2 {
+  margin: 50px auto;
+  background-color: white;
+  width: 300px;
+  height: 300px;
+  padding-top: 20px;
+  border: 4mm ridge rgb(147, 243, 250);
+  text-align: center;
+}
+
+.irasuto_back {
+  background: linear-gradient(
+    120deg,
+    #3ae4de 30%,
+    #fff9a3 30% 60%,
+    #f0604d 60% 80%,
+    rgb(36, 13, 39) 80% 20%
+  );
+}
+
+.red {
+    border: 4mm ridge rgb(250, 147, 147)
+}
+
+.blue {
+   border: 4mm ridge rgb(143, 143, 243);
+}
+
+.orange {
+  border: 4mm ridge orange
+}
+
+
 </style>
